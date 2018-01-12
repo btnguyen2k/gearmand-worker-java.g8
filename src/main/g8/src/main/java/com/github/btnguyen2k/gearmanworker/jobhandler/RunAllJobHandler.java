@@ -4,7 +4,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.github.btnguyen2k.gearmanworker.IJobHandler;
-import com.github.btnguyen2k.gearmanworker.JobExecStatus;
+import com.github.btnguyen2k.gearmanworker.JobExecResult;
+import com.github.btnguyen2k.gearmanworker.utils.IdUtils;
 
 /**
  * This {@link IJobHandler} runs all jobs when they arrive.
@@ -12,7 +13,7 @@ import com.github.btnguyen2k.gearmanworker.JobExecStatus;
  * @author Thanh Nguyen <btnguyen2k@gmail.com>
  * @since template-0.1.0
  */
-public abstract class RunAllJobHandler implements IJobHandler {
+public abstract class RunAllJobHandler<T> extends BaseJobHandler<T> {
 
     private static Logger LOGGER = LoggerFactory.getLogger(RunAllJobHandler.class);
 
@@ -20,25 +21,27 @@ public abstract class RunAllJobHandler implements IJobHandler {
      * {@inheritDoc}
      */
     @Override
-    public JobExecStatus handle(String function, byte[] data) {
-        long t = System.currentTimeMillis();
-        LOGGER.info("Starting job [" + function + "]...");
+    public JobExecResult handle(String function, byte[] data) {
+        final long t = System.currentTimeMillis();
+        final String ID = IdUtils.nextId();
         try {
-            return doJob(data);
+            LOGGER.info("[" + ID + "] Starting job [" + function + "]...");
+            T obj = decode(data);
+            if (obj == null) {
+                String msg = "[" + ID + "] Cannot decode received data!";
+                LOGGER.warn(msg);
+                return new JobExecResult(JobExecResult.Status.ERROR, msg);
+            }
+            JobExecResult result = doJob(ID, obj);
+            return result;
         } catch (Exception e) {
-            return null;
+            String msg = "[" + ID + "] Error while running job: " + e.getMessage();
+            LOGGER.error(msg, e);
+            return new JobExecResult(JobExecResult.Status.ERROR, msg, e);
         } finally {
-            long d = System.currentTimeMillis() - t;
-            LOGGER.info("Finished job [" + function + "] in " + d + "ms.");
+            final long d = System.currentTimeMillis() - t;
+            LOGGER.info("[" + ID + "] Finished job [" + function + "] in " + d + "ms.");
         }
     }
 
-    /**
-     * Sub-class override this method to implement its own business logic.
-     * 
-     * @param data
-     * @return
-     * @throws Exception
-     */
-    protected abstract JobExecStatus doJob(byte[] data) throws Exception;
 }

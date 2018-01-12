@@ -82,7 +82,7 @@ public class Bootstrap {
     }
 
     private static Map<String, IJobHandler> buildHandlers(Config config) {
-        String CONF_PATH = "gearman.handler";
+        String CONF_PATH = "gearman.handlers";
         Map<String, IJobHandler> result = new HashMap<>();
         Config configHandlers = ConfigUtils.getConfig(config, CONF_PATH);
         if (configHandlers == null) {
@@ -138,7 +138,7 @@ public class Bootstrap {
                 if (handler == null) {
                     LOGGER.warn("No handler to execute job [" + function + "]!");
                 } else {
-                    JobExecStatus result = handler.handle(function, data);
+                    JobExecResult result = handler.handle(function, data);
                 }
                 return null;
             };

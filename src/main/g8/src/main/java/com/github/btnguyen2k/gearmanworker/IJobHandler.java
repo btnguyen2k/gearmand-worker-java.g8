@@ -15,5 +15,5 @@ public interface IJobHandler {
      * @return
      * @throws Exception
      */
-    public JobExecStatus handle(String function, byte[] data) throws Exception;
+    public JobExecResult handle(String function, byte[] data) throws Exception;
 }

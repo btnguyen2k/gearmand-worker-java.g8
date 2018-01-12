@@ -41,6 +41,7 @@ libraryDependencies ++= Seq(
    ,"org.slf4j"                  % "slf4j-simple"                 % _slf4jVersion
    
    ,"org.apache.commons"         % "commons-lang3"                % "3.7"
-    
    ,"com.typesafe"               % "config"                       % "1.3.2"
+   
+   ,"com.github.ddth"            % "ddth-commons-core"            % "0.7.1.1"
 )
