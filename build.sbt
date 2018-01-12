@@ -13,19 +13,27 @@ lazy val root = (project in file(".")).settings(
 // Convenient settings: mostly copied from src/g8/build.sbt
 /*----------------------------------------------------------------------*/
 
-mainClass in (Compile, run) := Some("com.github.btnguyen2k.gearmanworker.Bootstrap")
-mainClass in (Compile, packageBin) := Some("com.github.btnguyen2k.gearmanworker.Bootstrap")
-
 fork := true
 
+val _mainClass = "com.github.btnguyen2k.gearmanworker.Bootstrap"
+
+/* Compiling  options */
 javacOptions ++= Seq("-source", "1.8", "-target", "1.8")
-sources in (Compile, doc) := Seq.empty
+mainClass in (Compile, run) := Some(_mainClass)
+
+/* Packaging options */
+mainClass in (Compile, packageBin)       := Some(_mainClass)
+sources in (Compile, doc)                := Seq.empty
 publishArtifact in (Compile, packageDoc) := false
 publishArtifact in (Compile, packageSrc) := false
+// add conf/ directory
+mappings in Universal                    ++= (baseDirectory.value / "conf" * "*" get) map(x => x -> ("conf/" + x.getName))
 
-EclipseKeys.projectFlavor            := EclipseProjectFlavor.Java                   // Java project. Don't expect Scala IDE
-EclipseKeys.executionEnvironment     := Some(EclipseExecutionEnvironment.JavaSE18)  // expect Java 1.8
+/* Eclipse settings */
+EclipseKeys.projectFlavor                := EclipseProjectFlavor.Java                   // Java project. Don't expect Scala IDE
+EclipseKeys.executionEnvironment         := Some(EclipseExecutionEnvironment.JavaSE18)  // expect Java 1.8
 
+/* Dependencies */
 val _slf4jVersion = "1.7.25"
 
 libraryDependencies ++= Seq(
