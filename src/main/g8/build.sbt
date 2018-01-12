@@ -10,6 +10,14 @@ lazy val root = (project in file(".")).enablePlugins(JavaAppPackaging, DockerPlu
     organization := "$organization$"
 )
 
+/* Packaging options */
+mainClass in (Compile, packageBin)       := Some(_mainClass)
+sources in (Compile, doc)                := Seq.empty
+publishArtifact in (Compile, packageDoc) := false
+publishArtifact in (Compile, packageSrc) := false
+// add conf/ directory
+mappings in Universal                    ++= (baseDirectory.value / "conf" * "*" get) map(x => x -> ("conf/" + x.getName))
+
 /*----------------------------------------------------------------------*/
 
 fork := true
@@ -19,14 +27,6 @@ val _mainClass = "com.github.btnguyen2k.gearmanworker.Bootstrap"
 /* Compiling  options */
 javacOptions ++= Seq("-source", "1.8", "-target", "1.8")
 mainClass in (Compile, run) := Some(_mainClass)
-
-/* Packaging options */
-mainClass in (Compile, packageBin)       := Some(_mainClass)
-sources in (Compile, doc)                := Seq.empty
-publishArtifact in (Compile, packageDoc) := false
-publishArtifact in (Compile, packageSrc) := false
-// add conf/ directory
-mappings in Universal                    ++= (baseDirectory.value / "conf" * "*" get) map(x => x -> ("conf/" + x.getName))
 
 /* Eclipse settings */
 EclipseKeys.projectFlavor                := EclipseProjectFlavor.Java                   // Java project. Don't expect Scala IDE
