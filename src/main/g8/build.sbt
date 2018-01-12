@@ -1,6 +1,6 @@
 import com.typesafe.config._
 
-val conf       = ConfigFactory.parseFile(new File("src/universal/conf/application.conf")).resolve()
+val conf       = ConfigFactory.parseFile(new File("conf/application.conf")).resolve()
 val appName    = conf.getString("app.name").toLowerCase().replaceAll("\\\\W+", "-")
 val appVersion = conf.getString("app.version")
 
