@@ -104,10 +104,4 @@ public class JobExecResult {
                 error);
         return tsb.toString();
     }
-
-    /*----------------------------------------------------------------------*/
-    public static void main(String[] args) {
-        JobExecResult result = new JobExecResult(Status.SUCCESSFUL, "Ok");
-        System.out.println(result);
-    }
 }
