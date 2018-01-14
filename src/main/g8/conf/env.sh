@@ -108,7 +108,7 @@ execStart() {
 
     "\${CMD[@]}" &
     disown \$!
-    #echo \$! > "\$APP_PID"
+    echo \$! > "\$APP_PID"
 }
 
 usageAndExit() {
