@@ -6,3 +6,5 @@
 /temp/
 /.classpath
 /.project
+*.log
+

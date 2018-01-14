@@ -14,7 +14,7 @@ import com.github.btnguyen2k.gearmanworker.jobhandler.RunAllJobHandler;
  */
 public class NoopRunAllJobHandler extends RunAllJobHandler<String> {
 
-    private final Logger LOGGER = LoggerFactory.getLogger(NoopRunAllJobHandler.class);
+    private static Logger LOGGER = LoggerFactory.getLogger(NoopRunAllJobHandler.class);
 
     /**
      * {@inheritDoc}

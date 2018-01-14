@@ -1,5 +1,8 @@
 package com.github.btnguyen2k.gearmanworker;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 /**
  * Job execution's result status.
  * 
@@ -90,5 +93,21 @@ public class JobExecResult {
     public JobExecResult setError(Throwable error) {
         this.error = error;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public String toString() {
+        ToStringBuilder tsb = new ToStringBuilder(this, ToStringStyle.JSON_STYLE);
+        tsb.append("status", status).append("message", message).append("data", data).append("error",
+                error);
+        return tsb.toString();
+    }
+
+    /*----------------------------------------------------------------------*/
+    public static void main(String[] args) {
+        JobExecResult result = new JobExecResult(Status.SUCCESSFUL, "Ok");
+        System.out.println(result);
     }
 }

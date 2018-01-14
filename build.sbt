@@ -43,7 +43,7 @@ val _slf4jVersion = "1.7.25"
 libraryDependencies ++= Seq(
     "org.slf4j"                  % "slf4j-api"                    % _slf4jVersion
    ,"org.slf4j"                  % "log4j-over-slf4j"             % _slf4jVersion
-   ,"org.slf4j"                  % "slf4j-simple"                 % _slf4jVersion
+   ,"ch.qos.logback"             % "logback-classic"              % "1.2.3"
    
    ,"org.apache.commons"         % "commons-lang3"                % "3.7"
    ,"com.typesafe"               % "config"                       % "1.3.2"

@@ -16,7 +16,7 @@ import com.github.btnguyen2k.gearmanworker.jobhandler.RunIfNotBusyJobHandler;
  */
 public class NoopRunIfNotBusyJobHandler extends RunIfNotBusyJobHandler<String> {
 
-    private final Logger LOGGER = LoggerFactory.getLogger(NoopRunIfNotBusyJobHandler.class);
+    private static Logger LOGGER = LoggerFactory.getLogger(NoopRunIfNotBusyJobHandler.class);
     private Random RAND = new Random(System.currentTimeMillis());
 
     /**

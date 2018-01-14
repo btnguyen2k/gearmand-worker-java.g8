@@ -39,14 +39,16 @@ public class QndGearmanClient {
 
     public static void main(String[] args) throws Exception {
         Gearman gearman = Gearman.createGearman();
-//        {
-//            GearmanClient client = gearman.createGearmanClient();
-//            client.addServer(gearman.createGearmanServer("localhost", 4730));
-//
-//            Thread.sleep(2000);
-//            qndSubmitJobSync(client, "demo");
-//            Thread.sleep(2000);
-//        }
+        {
+            GearmanClient client = gearman.createGearmanClient();
+            client.addServer(gearman.createGearmanServer("localhost", 4730));
+
+            Thread.sleep(2000);
+            qndSubmitJobSync(client, "demo");
+            Thread.sleep(2000);
+
+            client.shutdown();
+        }
 
         {
             GearmanClient client = gearman.createGearmanClient();
@@ -55,6 +57,9 @@ public class QndGearmanClient {
             Thread.sleep(2000);
             qndSubmitJobAsync(client, "topic1");
             Thread.sleep(2000);
+            client.shutdown();
         }
+
+        gearman.shutdown();
     }
 }

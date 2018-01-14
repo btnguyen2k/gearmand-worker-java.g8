@@ -12,6 +12,6 @@ public class IdUtils {
     private final static IdGenerator IDGEN = IdGenerator.getInstance(IdGenerator.getMacAddr());
 
     public static String nextId() {
-        return IDGEN.generateId128Ascii().toUpperCase();
+        return IDGEN.generateId128Ascii().toLowerCase();
     }
 }

@@ -43,7 +43,7 @@ public class Bootstrap {
                 throw new RuntimeException(msg);
             } else {
                 LOGGER.warn("Configuration file [" + configFile.getAbsolutePath()
-                        + "], is invalid or not readable, fallback to defaultO!");
+                        + "], is invalid or not readable, fallback to default!");
                 configFile = new File(DEFAULT_CONF_FILE);
             }
         }
@@ -156,7 +156,14 @@ public class Bootstrap {
                 if (handler == null) {
                     LOGGER.warn("No handler to execute job [" + function + "]!");
                 } else {
-                    JobExecResult result = handler.handle(function, data);
+                    try {
+                        @SuppressWarnings("unused")
+                        JobExecResult result = handler.handle(function, data);
+                        // TODO: do something with the result
+                    } catch (Exception e) {
+                        LOGGER.error("Exception while executing job [" + function + "]: "
+                                + e.getMessage(), e);
+                    }
                 }
                 return null;
             };
