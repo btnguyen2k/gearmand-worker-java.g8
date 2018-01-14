@@ -1,7 +1,7 @@
 //sbtPlugin := true
 //scalaVersion := "2.12.4"
 
-lazy val root = (project in file(".")).settings(
+lazy val root = (project in file(".")).enablePlugins(JavaAppPackaging, DockerPlugin).settings(
     name := "gearmand-worker-java.g8",
     //scriptedLaunchOpts ++= List("-Xms1024m", "-Xmx1024m", "-XX:ReservedCodeCacheSize=128m", "-XX:MaxPermSize=256m", "-Xss2m", "-Dfile.encoding=UTF-8"),
     resolvers += Resolver.url("typesafe", url("http://repo.typesafe.com/typesafe/ivy-releases/"))(Resolver.ivyStylePatterns)
@@ -17,8 +17,20 @@ fork := true
 
 val _mainClass = "com.github.btnguyen2k.gearmanworker.Bootstrap"
 
+/* Packaging options */
+mainClass in (Compile, packageBin)       := Some(_mainClass)
+sources in (Compile, doc)                := Seq.empty
+publishArtifact in (Compile, packageDoc) := false
+publishArtifact in (Compile, packageSrc) := false
+// add conf/ directory
+mappings in Universal                    ++= (baseDirectory.value / "conf" * "*" get) map(x => x -> ("conf/" + x.getName))
+
 /* Compiling  options */
 javacOptions ++= Seq("-source", "1.8", "-target", "1.8")
+
+/* Run options */
+javaOptions  ++= collection.JavaConverters.propertiesAsScalaMap(System.getProperties)
+    .map{ case (key,value) => "-D" + key + "=" +value }.toSeq
 mainClass in (Compile, run) := Some(_mainClass)
 
 /* Eclipse settings */

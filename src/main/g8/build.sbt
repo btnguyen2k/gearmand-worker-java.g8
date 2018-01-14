@@ -10,6 +10,12 @@ lazy val root = (project in file(".")).enablePlugins(JavaAppPackaging, DockerPlu
     organization := "$organization$"
 )
 
+/*----------------------------------------------------------------------*/
+
+fork := true
+
+val _mainClass = "com.github.btnguyen2k.gearmanworker.Bootstrap"
+
 /* Packaging options */
 mainClass in (Compile, packageBin)       := Some(_mainClass)
 sources in (Compile, doc)                := Seq.empty
@@ -18,14 +24,12 @@ publishArtifact in (Compile, packageSrc) := false
 // add conf/ directory
 mappings in Universal                    ++= (baseDirectory.value / "conf" * "*" get) map(x => x -> ("conf/" + x.getName))
 
-/*----------------------------------------------------------------------*/
-
-fork := true
-
-val _mainClass = "com.github.btnguyen2k.gearmanworker.Bootstrap"
-
 /* Compiling  options */
 javacOptions ++= Seq("-source", "1.8", "-target", "1.8")
+
+/* Run options */
+javaOptions  ++= collection.JavaConverters.propertiesAsScalaMap(System.getProperties)
+    .map{ case (key,value) => "-D" + key + "=" +value }.toSeq
 mainClass in (Compile, run) := Some(_mainClass)
 
 /* Eclipse settings */

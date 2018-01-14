@@ -33,8 +33,26 @@ public class Bootstrap {
     private static Logger LOGGER = LoggerFactory.getLogger(Bootstrap.class);
 
     private static Config loadConfig() {
-        File configFile = new File("conf/application.conf");
+        final String DEFAULT_CONF_FILE = "conf/application.conf";
+        String cmdConfigFile = System.getProperty("config.file", DEFAULT_CONF_FILE);
+        File configFile = new File(cmdConfigFile);
+        if (!configFile.isFile() || !configFile.canRead()) {
+            if (StringUtils.equals(cmdConfigFile, DEFAULT_CONF_FILE)) {
+                String msg = "Cannot read from config file [" + configFile.getAbsolutePath() + "]!";
+                LOGGER.error(msg);
+                throw new RuntimeException(msg);
+            } else {
+                LOGGER.warn("Configuration file [" + configFile.getAbsolutePath()
+                        + "], is invalid or not readable, fallback to defaultO!");
+                configFile = new File(DEFAULT_CONF_FILE);
+            }
+        }
         LOGGER.info("Loading configuration from [" + configFile + "]...");
+        if (!configFile.isFile() || !configFile.canRead()) {
+            String msg = "Cannot read from config file [" + configFile.getAbsolutePath() + "]!";
+            LOGGER.error(msg);
+            throw new RuntimeException(msg);
+        }
         Config config = ConfigFactory.parseFile(configFile)
                 .resolve(ConfigResolveOptions.defaults().setUseSystemEnvironment(true));
         LOGGER.info("Application config: " + config);
