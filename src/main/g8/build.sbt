@@ -25,6 +25,21 @@ autoScalaLibrary                         := false
 // add conf/ directory
 mappings in Universal                    ++= (baseDirectory.value / "conf" * "*" get) map(x => x -> ("conf/" + x.getName))
 
+/* Docker packaging options */
+dockerCommands := Seq()
+import com.typesafe.sbt.packager.docker._
+dockerCommands := Seq(
+    Cmd("FROM", "openjdk:8-jre-alpine"),
+    Cmd("LABEL", "maintainer=\"$app_author$\""),
+    Cmd("ADD", "opt /opt"),
+    Cmd("RUN", "apk add --no-cache bash && ln -s /opt/docker /opt/" + appName + " && chown -R daemon:daemon /opt"),	
+    Cmd("WORKDIR", "/opt/" + appName),
+    Cmd("USER", "daemon"),
+    ExecCmd("ENTRYPOINT", "./bin/" + appName)
+)
+packageName in Docker                 := appName
+version in Docker                     := appVersion
+
 /* Compiling  options */
 javacOptions ++= Seq("-source", "1.8", "-target", "1.8")
 
