@@ -35,7 +35,7 @@ dockerCommands := Seq(
     Cmd("RUN", "apk add --no-cache bash && ln -s /opt/docker /opt/" + appName + " && chown -R daemon:daemon /opt"),	
     Cmd("WORKDIR", "/opt/" + appName),
     Cmd("USER", "daemon"),
-    ExecCmd("ENTRYPOINT", "./bin/" + appName)
+    ExecCmd("ENTRYPOINT", "./conf/server-docker.sh start")
 )
 packageName in Docker                 := appName
 version in Docker                     := appVersion
