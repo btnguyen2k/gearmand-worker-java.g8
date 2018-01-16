@@ -16,6 +16,7 @@ Latest release: [template-v0.1.0](RELEASE-NOTES.md).
   - `sbt eclipse`: generate Eclipse project
   - `sbt run`: run project (for development)
   - `sbt universal:packageBin`: package project as a `.zip` file
+  - `sbt docker:publishLocal`: package project as docker image and publish to local
 - Support multiple Gearman servers
 - Support multiple functions
 - 2 types of job handlers:
@@ -38,7 +39,7 @@ Important configurations:
   - Example: `["demo","demo-again"]`
 - `gearman.handlers`: define job handlers
   - Format: a map of `{function_name = class_name}`
-  - Special mapping `{_ = class_name}` will handle jobs from all functions if no other rule found
+  - Special mapping `{_ = class_name}` will handle jobs from all functions if no other rules found
   - Example:
 ```
 handlers {

@@ -1,11 +1,13 @@
 # Release Notes
 
-## 2018-01-12: template-v0.1.0
+## 2018-01-16: template-v0.1.0
 
 First release:
 
-- Build and package project with `sbt`
-- Generate Eclipse project with `sbt eclipse`
+- Build and package project with `sbt`:
+  - Support build standalone package
+  - Support build Docker image
+  - Support generate Eclipse project
 - Support multiple Gearman servers
 - Support multiple functions
 - 2 types of job handlers:
