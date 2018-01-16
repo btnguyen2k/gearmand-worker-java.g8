@@ -50,15 +50,15 @@ public class QndGearmanClient {
             client.shutdown();
         }
 
-//        {
-//            GearmanClient client = gearman.createGearmanClient();
-//            client.addServer(gearman.createGearmanServer("localhost", 4731));
-//
-//            Thread.sleep(2000);
-//            qndSubmitJobAsync(client, "topic1");
-//            Thread.sleep(2000);
-//            client.shutdown();
-//        }
+        {
+            GearmanClient client = gearman.createGearmanClient();
+            client.addServer(gearman.createGearmanServer("localhost", 4731));
+
+            Thread.sleep(2000);
+            qndSubmitJobAsync(client, "topic1");
+            Thread.sleep(2000);
+            client.shutdown();
+        }
 
         gearman.shutdown();
     }

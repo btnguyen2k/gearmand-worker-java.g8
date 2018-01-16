@@ -96,7 +96,7 @@ preStart() {
     fi
 }
 
-execStart() {
+execStartBackground() {
     local CMD=(\$1)
     shift
     while [ "\$1" != "" ]; do
@@ -109,6 +109,19 @@ execStart() {
     "\${CMD[@]}" &
     disown \$!
     echo \$! > "\$APP_PID"
+}
+
+execStartForeground() {
+    local CMD=(\$1)
+    shift
+    while [ "\$1" != "" ]; do
+        CMD+=(\$1)
+        shift
+    done
+
+    echo -n "Starting \$APP_NAME: "
+
+    "\${CMD[@]}"
 }
 
 usageAndExit() {

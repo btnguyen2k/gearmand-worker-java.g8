@@ -31,7 +31,6 @@ doStart() {
     preStart
 
     RUN_CMD=(\$APP_HOME/bin/\$APP_NAME -Dapp.home=\$APP_HOME -Dapp.logdir=\$APP_LOGDIR)
-    RUN_CMD+=(-Dpidfile.path=\$APP_PID)
     if [ "\$APP_PROXY_HOST" != "" -a "\$APP_PROXY_PORT" != "0" ]; then
         RUN_CMD+=(-Dhttp.proxyHost=\$APP_PROXY_HOST -Dhttp.proxyPort=\$APP_PROXY_PORT)
         RUN_CMD+=(-Dhttps.proxyHost=\$APP_PROXY_HOST -Dhttps.proxyPort=\$APP_PROXY_PORT)
@@ -46,15 +45,11 @@ doStart() {
     RUN_CMD+=(-J-XX:+UseThreadPriorities -J-XX:ThreadPriorityPolicy=42 -J-XX:+HeapDumpOnOutOfMemoryError -J-Xss256k)
     RUN_CMD+=(-J-XX:+UseTLAB -J-XX:+ResizeTLAB -J-XX:+UseNUMA -J-XX:+PerfDisableSharedMem)
     RUN_CMD+=(-J-XX:+UseG1GC -J-XX:G1RSetUpdatingPauseTimePercent=5 -J-XX:MaxGCPauseMillis=500)
-    RUN_CMD+=(-J-XX:+PrintGCDetails -J-XX:+PrintGCDateStamps -J-XX:+PrintHeapAtGC -J-XX:+PrintTenuringDistribution)
-    RUN_CMD+=(-J-XX:+PrintGCApplicationStoppedTime -J-XX:+PrintPromotionFailure -J-XX:PrintFLSStatistics=1)
-    RUN_CMD+=(-J-Xloggc:\${APP_LOGDIR}/gc.log -J-XX:+UseGCLogFileRotation -J-XX:NumberOfGCLogFiles=10 -J-XX:GCLogFileSize=10M)
+    #RUN_CMD+=(-J-XX:+PrintGCDetails -J-XX:+PrintGCDateStamps -J-XX:+PrintHeapAtGC -J-XX:+PrintTenuringDistribution)
+    #RUN_CMD+=(-J-XX:+PrintGCApplicationStoppedTime -J-XX:+PrintPromotionFailure -J-XX:PrintFLSStatistics=1)
+    #RUN_CMD+=(-J-Xloggc:\${APP_LOGDIR}/gc.log -J-XX:+UseGCLogFileRotation -J-XX:NumberOfGCLogFiles=10 -J-XX:GCLogFileSize=10M)
     RUN_CMD+=(-Dconfig.file=\$FINAL_APP_CONF -Dlogback.configurationFile=\$FINAL_APP_LOGBACK)
     RUN_CMD+=(\$JVM_EXTRA_OPS)
-    
-    execStart \${RUN_CMD[@]}
-    
-    echo "STARTED \$APP_NAME `date`"
     
     echo "APP_MEM             : \$APP_MEM"
     echo "APP_CONF            : \$FINAL_APP_CONF"
@@ -62,6 +57,8 @@ doStart() {
     echo "APP_LOGDIR          : \$APP_LOGDIR"
     echo "APP_PID             : \$APP_PID"
     echo "JVM_EXTRA_OPS       : \$JVM_EXTRA_OPS"
+
+    execStartForeground \${RUN_CMD[@]}
 }
 
 ACTION=\$1
